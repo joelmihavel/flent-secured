@@ -6,6 +6,15 @@
   <title>Flent Secured</title>
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
+    @font-face {
+      font-family: 'Geist Pixel';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-pixel/GeistPixel-Square.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+  </style>
+  <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
@@ -78,12 +87,12 @@
     }
 
     .hero-text h1 {
-      font-family: 'Geist', sans-serif;
+      font-family: 'Geist Pixel', 'Geist', sans-serif;
       font-size: 28px;
       font-weight: 400;
       line-height: 40px;
       letter-spacing: -1px;
-      color: var(--text-primary);
+      color: var(--text-secondary);
     }
 
     .hero-text h1 .accent {
@@ -167,7 +176,9 @@
       padding: 0 0;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      align-items: center;
+      gap: 4px;
+      position: relative;
     }
 
     .dot-row {
@@ -178,10 +189,15 @@
     }
 
     .dot-row span {
-      width: 4px;
-      height: 3px;
+      width: 9px;
+      height: 2px;
       background: #1a1a1a;
       border-radius: 1px;
+    }
+
+    .divider-arrow {
+      width: 3px;
+      margin-top: -4px;
     }
 
     /* Section heading pattern */
@@ -213,7 +229,7 @@
     }
 
     .section-heading {
-      font-family: 'Geist', sans-serif;
+      font-family: 'Geist Pixel', 'Geist', sans-serif;
       font-size: 28px;
       font-weight: 400;
       line-height: 40px;
@@ -238,7 +254,7 @@
     /* Feature Cards - horizontal scroll */
     .cards-scroll-container {
       width: 100%;
-      background: var(--bg-surface);
+      background: var(--bg);
       padding: 16px;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
@@ -258,7 +274,7 @@
       position: relative;
       width: 244px;
       min-width: 244px;
-      height: 321px;
+      height: 240px;
       background: var(--bg-card);
       border-radius: 4px;
       display: flex;
@@ -267,47 +283,23 @@
       justify-content: center;
       gap: 16px;
       padding: 24px;
-      overflow: hidden;
-      box-shadow: 0px 78px 47px rgba(0,0,0,0.05),
-                  0px 35px 35px rgba(0,0,0,0.09),
-                  0px 9px 19px rgba(0,0,0,0.1);
+      overflow: visible;
     }
 
-    /* Torn paper top edge */
-    .note-card::before {
-      content: '';
-      position: absolute;
-      top: -2px;
-      left: 0;
-      right: 0;
-      height: 14px;
-      background: repeating-linear-gradient(
-        90deg,
-        transparent,
-        transparent 7px,
-        var(--bg-card) 7px,
-        var(--bg-card) 9px,
-        transparent 9px,
-        transparent 11px
-      );
-      background-size: 20px 14px;
-      background-position: 4px 0;
-      z-index: 1;
-    }
-
+    .note-card::before,
     .note-card::after {
-      content: '';
+      display: none;
+    }
+
+    /* Scalloped circle */
+    .scallop {
       position: absolute;
-      top: -6px;
-      left: 0;
-      right: 0;
-      height: 14px;
-      background: repeating-radial-gradient(
-        circle at 11px 7px,
-        var(--bg-surface) 4px,
-        transparent 4.5px
-      );
-      background-size: 20px 14px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--bg);
+      top: -4.5px;
+      z-index: 1;
     }
 
     .note-card-icon {
@@ -317,7 +309,7 @@
     }
 
     .note-card p {
-      font-family: 'Geist', sans-serif;
+      font-family: 'Geist Pixel', 'Geist', sans-serif;
       font-size: 16px;
       font-weight: 400;
       color: var(--text-secondary);
@@ -351,31 +343,27 @@
     .req-cards {
       display: flex;
       flex-direction: column;
-      padding: 32px 24px;
+      padding: 64px 24px;
       width: 100%;
       align-items: center;
+      gap: 64px;
     }
 
     .req-card-wrap {
       position: sticky;
       width: 100%;
       max-width: 345px;
-      z-index: 1;
     }
 
-    .req-card-wrap:nth-child(1) { top: 0px; z-index: 1; transform: rotate(-3deg); }
-    .req-card-wrap:nth-child(2) { top: 16px; z-index: 2; transform: rotate(3deg); }
-    .req-card-wrap:nth-child(3) { top: 32px; z-index: 3; transform: rotate(-3deg); }
-    .req-card-wrap:nth-child(4) { top: 48px; z-index: 4; transform: rotate(3deg); }
-
-    .req-card-wrap + .req-card-wrap {
-      margin-top: -24px;
-    }
+    .req-card-wrap:nth-child(1) { top: 20px; z-index: 1; transform: rotate(3deg); }
+    .req-card-wrap:nth-child(2) { top: 40px; z-index: 2; transform: rotate(-3deg); }
+    .req-card-wrap:nth-child(3) { top: 60px; z-index: 3; transform: rotate(3deg); }
+    .req-card-wrap:nth-child(4) { top: 80px; z-index: 4; transform: rotate(-3deg); }
 
     .req-card {
       position: relative;
       width: 100%;
-      min-height: 180px;
+      height: 240px;
       background: var(--bg-card);
       border-radius: 4px;
       display: flex;
@@ -384,50 +372,27 @@
       justify-content: center;
       padding: 32px 24px;
       overflow: hidden;
-      box-shadow: 0px 78px 47px rgba(0,0,0,0.05),
-                  0px 35px 35px rgba(0,0,0,0.09),
-                  0px 9px 19px rgba(0,0,0,0.1),
-                  0px -2px 8px rgba(0,0,0,0.3);
+      box-shadow: 0px 9px 19px rgba(0,0,0,0.15);
     }
 
-    .req-card::before {
-      content: '';
+    .req-card::before,
+    .req-card::after {
+      display: none;
+    }
+
+    /* Scalloped circle for bg-color body */
+    .scallop-bg {
       position: absolute;
-      top: -2px;
-      left: 0;
-      right: 0;
-      height: 14px;
-      background: repeating-linear-gradient(
-        90deg,
-        transparent,
-        transparent 7px,
-        var(--bg-card) 7px,
-        var(--bg-card) 9px,
-        transparent 9px,
-        transparent 11px
-      );
-      background-size: 20px 14px;
-      background-position: 4px 0;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--bg);
+      top: -5.5px;
       z-index: 1;
     }
 
-    .req-card::after {
-      content: '';
-      position: absolute;
-      top: -6px;
-      left: 0;
-      right: 0;
-      height: 14px;
-      background: repeating-radial-gradient(
-        circle at 11px 7px,
-        var(--bg) 4px,
-        transparent 4.5px
-      );
-      background-size: 20px 14px;
-    }
-
     .req-card p {
-      font-family: 'Geist', sans-serif;
+      font-family: 'Geist Pixel', 'Geist', sans-serif;
       font-size: 16px;
       font-weight: 400;
       color: var(--text-secondary);
@@ -540,7 +505,7 @@
       flex-direction: column;
       align-items: center;
       gap: 45px;
-      padding: 0 24px;
+      padding: 0 24px 160px;
     }
 
     .speak-btn {
@@ -757,8 +722,8 @@
 <body>
 
   <!-- Hero Background Illustration -->
-  <div style="position:absolute; top:50px; left:50%; transform:translateX(-50%); width:278px; height:415px; pointer-events:none; z-index:0;">
-    <img src="svg/hero-background.svg" alt="" width="278" height="415" style="width:100%; height:100%;" />
+  <div style="position:absolute; top:0; left:0; width:100%; pointer-events:none; z-index:0;">
+    <img src="svg/hero-background.svg" alt="" style="width:100%; height:auto;" />
   </div>
 
   <!-- Hero Section -->
@@ -770,7 +735,7 @@
       </svg>
     </div>
 
-    <!-- House Illustration (exact from Paper) -->
+    <!-- House Illustration -->
     <div class="hero-illustration illustration">
       <img src="svg/hero-illustration.svg" alt="" width="199" height="150" />
     </div>
@@ -781,11 +746,11 @@
         <span class="accent">Your Tenant invited</span><br>
         you to Flent Secured
       </h1>
-      <p>A structured way to manage rent with added protection for landlords.</p>
+      <p>Sign up &amp; receive a free rental cover of up to ₹1.5L against vacant months and sudden tenant exits.</p>
     </div>
   </section>
 
-  <!-- Get Started Button -->
+  <!-- Get Started Button + Arrow -->
   <div class="cta-section" style="padding: 32px 48px;">
     <div class="btn-primary fade-up">
       <div class="pill"></div>
@@ -795,17 +760,16 @@
     </div>
   </div>
 
+  <!-- Arrow Line -->
+  <div style="display:flex; justify-content:center; margin-bottom:24px;">
+    <svg width="3" height="180" viewBox="0 0 3 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M1.443 179.943L2.887 178.5L1.443 177.057L0 178.5L1.443 179.943ZM1.443 0H1.193V178.5H1.443H1.693V0H1.443Z" fill="#FF9A6D" />
+    </svg>
+  </div>
+
   <!-- Dotted Divider -->
-  <div class="dotted-divider" style="padding: 20px 0;">
-    <div class="dot-row">
-      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-    </div>
-    <div class="dot-row">
-      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-    </div>
-    <div class="dot-row">
-      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-    </div>
+  <div class="dotted-divider">
+    <img src="svg/divider.svg" alt="" width="393" height="35" style="width: 100%;" />
   </div>
 
   <div class="spacer-lg"></div>
@@ -817,24 +781,25 @@
     </div>
     <div class="section-text">
       <h2 class="section-heading">
-        <span class="neutral">What this</span><br>
-        <span class="accent">means for you?</span>
+        <span class="neutral">What</span><br>
+        <span class="accent">changes for you?</span>
       </h2>
-      <p class="section-body">Flent Secured adds structure and safeguards to rental income. It does not change your rent amount or agreement.</p>
+      <p class="section-body">Almost nothing.<br><br>Rent continues to hit your bank account directly. You don't pay any fees.<br><br>The only addition is a free rental cover that protects your income.</p>
     </div>
   </section>
 
   <div class="spacer-md"></div>
 
-  <!-- Why landlords consider this? -->
-  <section class="section fade-up">
+  <!-- Full Protection Section -->
+  <section class="section fade-up" style="gap: 32px;">
     <div class="illustration" style="height: 120px;">
       <img src="svg/why-landlords.svg" alt="" width="208" height="120" />
     </div>
     <div class="section-text gap-14">
+      <p class="section-body">200+ landlords trust us already</p>
       <h2 class="section-heading">
-        <span class="accent">Why landlords</span><br>
-        consider this?
+        <span class="neutral">Full Protection</span><br>
+        <span class="accent">no questions asked</span>
       </h2>
       <p class="section-body">More protection. No added charge</p>
     </div>
@@ -846,15 +811,19 @@
   <div class="cards-scroll-container fade-up">
     <div class="cards-scroll">
       <div class="note-card">
+        <span class="scallop" style="left:12.5px"></span><span class="scallop" style="left:33.5px"></span><span class="scallop" style="left:54.5px"></span><span class="scallop" style="left:75.5px"></span><span class="scallop" style="left:96.5px"></span><span class="scallop" style="left:117.5px"></span><span class="scallop" style="left:138.5px"></span><span class="scallop" style="left:159.5px"></span><span class="scallop" style="left:180.5px"></span><span class="scallop" style="left:201.5px"></span><span class="scallop" style="left:222.5px"></span>
         <p>If the tenant leaves, <span class="accent">receive one month's rent</span> if the home remains vacant for 30 days</p>
       </div>
       <div class="note-card">
+        <span class="scallop" style="left:12.5px"></span><span class="scallop" style="left:33.5px"></span><span class="scallop" style="left:54.5px"></span><span class="scallop" style="left:75.5px"></span><span class="scallop" style="left:96.5px"></span><span class="scallop" style="left:117.5px"></span><span class="scallop" style="left:138.5px"></span><span class="scallop" style="left:159.5px"></span><span class="scallop" style="left:180.5px"></span><span class="scallop" style="left:201.5px"></span><span class="scallop" style="left:222.5px"></span>
         <p>If a tenant exits without notice, <span class="accent">receive up to one month's rent</span> after adjusting the deposit</p>
       </div>
       <div class="note-card">
+        <span class="scallop" style="left:12.5px"></span><span class="scallop" style="left:33.5px"></span><span class="scallop" style="left:54.5px"></span><span class="scallop" style="left:75.5px"></span><span class="scallop" style="left:96.5px"></span><span class="scallop" style="left:117.5px"></span><span class="scallop" style="left:138.5px"></span><span class="scallop" style="left:159.5px"></span><span class="scallop" style="left:180.5px"></span><span class="scallop" style="left:201.5px"></span><span class="scallop" style="left:222.5px"></span>
         <p>Complimentary tenant <span class="accent">background verification</span> report</p>
       </div>
       <div class="note-card">
+        <span class="scallop" style="left:12.5px"></span><span class="scallop" style="left:33.5px"></span><span class="scallop" style="left:54.5px"></span><span class="scallop" style="left:75.5px"></span><span class="scallop" style="left:96.5px"></span><span class="scallop" style="left:117.5px"></span><span class="scallop" style="left:138.5px"></span><span class="scallop" style="left:159.5px"></span><span class="scallop" style="left:180.5px"></span><span class="scallop" style="left:201.5px"></span><span class="scallop" style="left:222.5px"></span>
         <p>We <span class="accent">help find a replacement</span> tenant within 30 days</p>
       </div>
     </div>
@@ -869,8 +838,8 @@
     </div>
     <div class="section-text">
       <h2 class="section-heading">
-        <span class="accent">To activate</span><br>
-        protection cover
+        <span class="accent">Getting started </span><br>
+        is simple
       </h2>
     </div>
   </section>
@@ -879,22 +848,26 @@
   <div class="req-cards">
     <div class="req-card-wrap">
       <div class="req-card fade-up">
-        <p><span class="accent">Minimum 3 month</span> waiting period</p>
+        <span class="scallop-bg" style="left:12.5px"></span><span class="scallop-bg" style="left:33.5px"></span><span class="scallop-bg" style="left:54.5px"></span><span class="scallop-bg" style="left:75.5px"></span><span class="scallop-bg" style="left:96.5px"></span><span class="scallop-bg" style="left:117.5px"></span><span class="scallop-bg" style="left:138.5px"></span><span class="scallop-bg" style="left:159.5px"></span><span class="scallop-bg" style="left:180.5px"></span><span class="scallop-bg" style="left:201.5px"></span><span class="scallop-bg" style="left:222.5px"></span><span class="scallop-bg" style="left:243.5px"></span><span class="scallop-bg" style="left:264.5px"></span><span class="scallop-bg" style="left:285.5px"></span><span class="scallop-bg" style="left:306.5px"></span><span class="scallop-bg" style="left:327.5px"></span>
+        <p><span class="accent">Sign up &amp; verify</span> your tenant's details</p>
       </div>
     </div>
     <div class="req-card-wrap">
       <div class="req-card fade-up">
-        <p><span class="accent">Rent must be collected continuously</span> through Flent Secured</p>
+        <span class="scallop-bg" style="left:12.5px"></span><span class="scallop-bg" style="left:33.5px"></span><span class="scallop-bg" style="left:54.5px"></span><span class="scallop-bg" style="left:75.5px"></span><span class="scallop-bg" style="left:96.5px"></span><span class="scallop-bg" style="left:117.5px"></span><span class="scallop-bg" style="left:138.5px"></span><span class="scallop-bg" style="left:159.5px"></span><span class="scallop-bg" style="left:180.5px"></span><span class="scallop-bg" style="left:201.5px"></span><span class="scallop-bg" style="left:222.5px"></span><span class="scallop-bg" style="left:243.5px"></span><span class="scallop-bg" style="left:264.5px"></span><span class="scallop-bg" style="left:285.5px"></span><span class="scallop-bg" style="left:306.5px"></span><span class="scallop-bg" style="left:327.5px"></span>
+        <p>Ask tenants to pay via Secured for <span class="accent">three consecutive months (atleast)</span></p>
       </div>
     </div>
     <div class="req-card-wrap">
       <div class="req-card fade-up">
-        <p>Protection cover up to <span class="accent">₹1.5 lakhs</span></p>
+        <span class="scallop-bg" style="left:12.5px"></span><span class="scallop-bg" style="left:33.5px"></span><span class="scallop-bg" style="left:54.5px"></span><span class="scallop-bg" style="left:75.5px"></span><span class="scallop-bg" style="left:96.5px"></span><span class="scallop-bg" style="left:117.5px"></span><span class="scallop-bg" style="left:138.5px"></span><span class="scallop-bg" style="left:159.5px"></span><span class="scallop-bg" style="left:180.5px"></span><span class="scallop-bg" style="left:201.5px"></span><span class="scallop-bg" style="left:222.5px"></span><span class="scallop-bg" style="left:243.5px"></span><span class="scallop-bg" style="left:264.5px"></span><span class="scallop-bg" style="left:285.5px"></span><span class="scallop-bg" style="left:306.5px"></span><span class="scallop-bg" style="left:327.5px"></span>
+        <p>Your free rental cover activates after <span class="accent">three consecutive payments</span></p>
       </div>
     </div>
     <div class="req-card-wrap">
       <div class="req-card fade-up">
-        <p><span class="accent">Minimum 30 days notice</span> served through the app for offboarding</p>
+        <span class="scallop-bg" style="left:12.5px"></span><span class="scallop-bg" style="left:33.5px"></span><span class="scallop-bg" style="left:54.5px"></span><span class="scallop-bg" style="left:75.5px"></span><span class="scallop-bg" style="left:96.5px"></span><span class="scallop-bg" style="left:117.5px"></span><span class="scallop-bg" style="left:138.5px"></span><span class="scallop-bg" style="left:159.5px"></span><span class="scallop-bg" style="left:180.5px"></span><span class="scallop-bg" style="left:201.5px"></span><span class="scallop-bg" style="left:222.5px"></span><span class="scallop-bg" style="left:243.5px"></span><span class="scallop-bg" style="left:264.5px"></span><span class="scallop-bg" style="left:285.5px"></span><span class="scallop-bg" style="left:306.5px"></span><span class="scallop-bg" style="left:327.5px"></span>
+        <p><span class="accent">Claim directly through the Secured app</span> in case of vacancy or sudden exits</p>
       </div>
     </div>
   </div>
@@ -1121,8 +1094,8 @@
       <img src="svg/prefer-to-speak.svg" alt="" width="153" height="110" />
     </div>
     <div class="section-text gap-14">
-      <h2 class="section-heading">
-        <span class="accent">Prefer to speak</span><br>
+      <h2 class="section-heading" style="color: var(--text-secondary);">
+        Prefer to speak<br>
         with someone before?
       </h2>
       <p class="section-body">We're happy to explain how Flent Secured works and what it means for you.</p>
@@ -1130,9 +1103,9 @@
     <div class="speak-btn">
       <div class="btn-primary">
         <div class="pill"></div>
-        <div class="btn-inner">
+        <a href="https://wa.me/918904695925?text=Help%20me%20understand%20more%20about%20flent%20secured%20for%20landlords" target="_blank" rel="noopener noreferrer" class="btn-inner" style="text-decoration: none;">
           <span>Talk to support</span>
-        </div>
+        </a>
       </div>
     </div>
   </section>
