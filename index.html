@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Flent Secured</title>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0d0d0d;
+      --bg-card: #202020;
+      --bg-surface: #131313;
+      --bg-input: #1a1a1a;
+      --brand: #ff9a6d;
+      --text-primary: #eeeeee;
+      --text-secondary: #a9a9a9;
+      --text-muted: #656565;
+      --text-dim: #444444;
+      --border: #202020;
+      --border-brand: #ff9a6d;
+      --pill: #4d4d4d;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      max-width: 393px;
+      margin: 0 auto;
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+    }
+
+    .font-geist {
+      font-family: 'Geist', sans-serif;
+    }
+
+    /* Status Bar */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 24px;
+      height: 53px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* Hero */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+      padding: 30px 24px 0;
+    }
+
+    .hero-logo svg {
+      width: 34px;
+      height: 40px;
+    }
+
+    .hero-illustration {
+      width: 199px;
+      height: 150px;
+    }
+
+    .hero-text {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero-text h1 {
+      font-family: 'Geist', sans-serif;
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 40px;
+      letter-spacing: -1px;
+      color: var(--text-primary);
+    }
+
+    .hero-text h1 .accent {
+      color: var(--brand);
+    }
+
+    .hero-text p {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 20px;
+    }
+
+    /* CTA Button */
+    .btn-primary {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .btn-primary .pill {
+      width: 24px;
+      height: 2px;
+      background: var(--pill);
+      border-radius: 200px;
+    }
+
+    .btn-primary .btn-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 16px;
+      border-radius: 8px;
+      border: 0.5px solid var(--border-brand);
+      background: linear-gradient(180deg, #202020 0%, #0d0d0d 90%);
+      box-shadow: 0px 6px 12px -2px rgba(153,92,65,0.24),
+                  inset 0px -3px 4px 1px rgba(255,255,255,0.12),
+                  inset -2px -4px 0px 1px #000;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn-primary .btn-inner:hover {
+      opacity: 0.9;
+    }
+
+    .btn-primary .btn-inner span {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      color: #ffffff;
+      line-height: 24px;
+    }
+
+    /* Disabled button */
+    .btn-disabled .btn-inner {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      box-shadow: none;
+    }
+
+    .btn-disabled .btn-inner span {
+      color: var(--text-muted);
+    }
+
+    /* Dotted divider lines */
+    .dotted-divider {
+      width: 100%;
+      padding: 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .dot-row {
+      display: flex;
+      gap: 0;
+      width: 100%;
+      justify-content: space-evenly;
+    }
+
+    .dot-row span {
+      width: 4px;
+      height: 3px;
+      background: #1a1a1a;
+      border-radius: 1px;
+    }
+
+    /* Section heading pattern */
+    .section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 45px;
+      padding: 0 24px;
+    }
+
+    .section-icon {
+      width: auto;
+      height: 100px;
+      opacity: 0.5;
+    }
+
+    .section-text {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+      text-align: center;
+      max-width: 291px;
+    }
+
+    .section-text.gap-14 {
+      gap: 14px;
+    }
+
+    .section-heading {
+      font-family: 'Geist', sans-serif;
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 40px;
+      letter-spacing: -1px;
+    }
+
+    .section-heading .accent {
+      color: var(--brand);
+    }
+
+    .section-heading .neutral {
+      color: var(--text-secondary);
+    }
+
+    .section-body {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 20px;
+    }
+
+    /* Feature Cards - horizontal scroll */
+    .cards-scroll-container {
+      width: 100%;
+      background: var(--bg-surface);
+      padding: 16px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .cards-scroll-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    .cards-scroll {
+      display: flex;
+      gap: 16px;
+    }
+
+    .note-card {
+      position: relative;
+      width: 244px;
+      min-width: 244px;
+      height: 321px;
+      background: var(--bg-card);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 24px;
+      overflow: hidden;
+      box-shadow: 0px 78px 47px rgba(0,0,0,0.05),
+                  0px 35px 35px rgba(0,0,0,0.09),
+                  0px 9px 19px rgba(0,0,0,0.1);
+    }
+
+    /* Torn paper top edge */
+    .note-card::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: 0;
+      right: 0;
+      height: 14px;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 7px,
+        var(--bg-card) 7px,
+        var(--bg-card) 9px,
+        transparent 9px,
+        transparent 11px
+      );
+      background-size: 20px 14px;
+      background-position: 4px 0;
+      z-index: 1;
+    }
+
+    .note-card::after {
+      content: '';
+      position: absolute;
+      top: -6px;
+      left: 0;
+      right: 0;
+      height: 14px;
+      background: repeating-radial-gradient(
+        circle at 11px 7px,
+        var(--bg-surface) 4px,
+        transparent 4.5px
+      );
+      background-size: 20px 14px;
+    }
+
+    .note-card-icon {
+      width: 40px;
+      height: 40px;
+      opacity: 0.7;
+    }
+
+    .note-card p {
+      font-family: 'Geist', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      text-align: center;
+      line-height: 24px;
+    }
+
+    .note-card p .accent {
+      color: var(--brand);
+    }
+
+    /* Paperclip decorations */
+    .paperclip {
+      position: absolute;
+      width: 20px;
+      height: 35px;
+      opacity: 0.3;
+    }
+
+    .paperclip-tl {
+      top: 28px;
+      left: 44px;
+    }
+
+    .paperclip-tr {
+      top: 63px;
+      right: 30px;
+    }
+
+    /* Vertical requirement cards — sticky stack */
+    .req-cards {
+      display: flex;
+      flex-direction: column;
+      padding: 32px 24px;
+      width: 100%;
+      align-items: center;
+    }
+
+    .req-card-wrap {
+      position: sticky;
+      width: 100%;
+      max-width: 345px;
+      z-index: 1;
+    }
+
+    .req-card-wrap:nth-child(1) { top: 0px; z-index: 1; transform: rotate(-3deg); }
+    .req-card-wrap:nth-child(2) { top: 16px; z-index: 2; transform: rotate(3deg); }
+    .req-card-wrap:nth-child(3) { top: 32px; z-index: 3; transform: rotate(-3deg); }
+    .req-card-wrap:nth-child(4) { top: 48px; z-index: 4; transform: rotate(3deg); }
+
+    .req-card-wrap + .req-card-wrap {
+      margin-top: -24px;
+    }
+
+    .req-card {
+      position: relative;
+      width: 100%;
+      min-height: 180px;
+      background: var(--bg-card);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px;
+      overflow: hidden;
+      box-shadow: 0px 78px 47px rgba(0,0,0,0.05),
+                  0px 35px 35px rgba(0,0,0,0.09),
+                  0px 9px 19px rgba(0,0,0,0.1),
+                  0px -2px 8px rgba(0,0,0,0.3);
+    }
+
+    .req-card::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: 0;
+      right: 0;
+      height: 14px;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 7px,
+        var(--bg-card) 7px,
+        var(--bg-card) 9px,
+        transparent 9px,
+        transparent 11px
+      );
+      background-size: 20px 14px;
+      background-position: 4px 0;
+      z-index: 1;
+    }
+
+    .req-card::after {
+      content: '';
+      position: absolute;
+      top: -6px;
+      left: 0;
+      right: 0;
+      height: 14px;
+      background: repeating-radial-gradient(
+        circle at 11px 7px,
+        var(--bg) 4px,
+        transparent 4.5px
+      );
+      background-size: 20px 14px;
+    }
+
+    .req-card p {
+      font-family: 'Geist', sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      text-align: center;
+      line-height: 24px;
+    }
+
+    .req-card p .accent {
+      color: var(--brand);
+    }
+
+    /* Form Section */
+    .form-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 48px;
+      padding: 48px 40px;
+      background: var(--bg-surface);
+      border-radius: 16px;
+      margin: 0 0;
+      width: 100%;
+    }
+
+    .form-heading {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .field label {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 20px;
+    }
+
+    .field-input {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 0;
+    }
+
+    .field-input .country-code {
+      font-size: 16px;
+      color: var(--text-dim);
+      line-height: 24px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .field-input .country-code svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--text-dim);
+    }
+
+    .field-input .placeholder {
+      font-size: 20px;
+      color: var(--text-dim);
+      line-height: 32px;
+    }
+
+    .form-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      align-items: center;
+    }
+
+    .form-disclaimer {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      text-align: center;
+      line-height: 20px;
+    }
+
+    /* Spacers */
+    .spacer-sm { height: 40px; }
+    .spacer-md { height: 80px; }
+    .spacer-lg { height: 100px; }
+
+    /* CTA Section */
+    .cta-section {
+      padding: 0 48px;
+      width: 100%;
+    }
+
+    /* Speak section */
+    .speak-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 45px;
+      padding: 0 24px;
+    }
+
+    .speak-btn {
+      width: 297px;
+    }
+
+    /* Home indicator */
+    .home-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 0 8px;
+    }
+
+    .home-indicator div {
+      width: 134px;
+      height: 5px;
+      background: #ffffff;
+      border-radius: 100px;
+    }
+
+    /* Scroll animations */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Illustration styles */
+    .illustration {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .illustration img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* Multi-step form */
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 48px;
+      width: 100%;
+      animation: stepFadeIn 0.4s ease;
+    }
+
+    .step[style*="display: none"], .step[style*="display:none"] {
+      animation: none;
+    }
+
+    @keyframes stepFadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 20px;
+      font-weight: 400;
+      color: #dddddd;
+      line-height: 32px;
+      width: 100%;
+      caret-color: var(--brand);
+    }
+
+    .form-input::placeholder {
+      color: var(--text-dim);
+    }
+
+    .form-input.phone-input {
+      flex: 1;
+    }
+
+    /* OTP inputs */
+    .otp-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .otp-box {
+      width: 64px;
+      height: 64px;
+      background: #222222;
+      border: 1px solid #444444;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0px 1px 2px 0px rgba(10,13,18,0.05);
+    }
+
+    .otp-input {
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 48px;
+      font-weight: 500;
+      color: #444444;
+      text-align: center;
+      line-height: 60px;
+      letter-spacing: -0.96px;
+      caret-color: var(--brand);
+    }
+
+    .otp-input.filled {
+      color: #ffffff;
+    }
+
+    /* Detail rows */
+    .detail-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .detail-row-inline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .detail-row-stacked {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      width: 100%;
+    }
+
+    .detail-label-group {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .detail-label-group svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .detail-label {
+      font-size: 12px;
+      font-weight: 400;
+      color: #878787;
+      line-height: 20px;
+    }
+
+    .detail-value {
+      font-size: 14px;
+      font-weight: 400;
+      color: #cbcbcb;
+      line-height: 20px;
+    }
+
+    .detail-divider {
+      width: 100%;
+      height: 0;
+      border: none;
+      border-top: 0.25px dashed #444444;
+    }
+
+    /* Button active transition */
+    .btn-primary .btn-inner {
+      transition: all 0.3s ease;
+    }
+
+    /* Resend / Enter Manually link */
+    .form-link {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      text-align: center;
+      line-height: 20px;
+      cursor: pointer;
+    }
+
+    /* Success illustration placeholder */
+    .success-illustration {
+      width: 265px;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.6;
+    }
+
+    .success-body {
+      font-size: 14px;
+      font-weight: 400;
+      color: #a6a6a6;
+      text-align: center;
+      line-height: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero Background Illustration -->
+  <div style="position:absolute; top:50px; left:50%; transform:translateX(-50%); width:278px; height:415px; pointer-events:none; z-index:0;">
+    <img src="svg/hero-background.svg" alt="" width="278" height="415" style="width:100%; height:100%;" />
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero fade-up" style="position:relative; z-index:1;">
+    <!-- Logo -->
+    <div class="hero-logo">
+      <svg viewBox="0 0 34 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12.475 40H3.726V21.206H0V16.022H3.726C1.653 7.986 7.507 3.169 10.693 1.764C20.025 -3.161 29.703 3.385 33.375 7.273V40H24.626V11.647C19.571 3.352 13.231 5.275 10.693 7.273C7.453 12.846 12.043 15.428 14.743 16.022H19.28V21.206H12.475V40Z" fill="#FFFFFF" />
+      </svg>
+    </div>
+
+    <!-- House Illustration (exact from Paper) -->
+    <div class="hero-illustration illustration">
+      <img src="svg/hero-illustration.svg" alt="" width="199" height="150" />
+    </div>
+
+    <!-- Heading -->
+    <div class="hero-text">
+      <h1>
+        <span class="accent">Your Tenant invited</span><br>
+        you to Flent Secured
+      </h1>
+      <p>A structured way to manage rent with added protection for landlords.</p>
+    </div>
+  </section>
+
+  <!-- Get Started Button -->
+  <div class="cta-section" style="padding: 32px 48px;">
+    <div class="btn-primary fade-up">
+      <div class="pill"></div>
+      <div class="btn-inner" onclick="document.getElementById('multiStepForm').scrollIntoView({behavior:'smooth', block:'center'}); setTimeout(() => document.getElementById('phoneInput').focus(), 600);">
+        <span>Get Started</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dotted Divider -->
+  <div class="dotted-divider" style="padding: 20px 0;">
+    <div class="dot-row">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="dot-row">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="dot-row">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <div class="spacer-lg"></div>
+
+  <!-- What this means for you? -->
+  <section class="section fade-up">
+    <div class="illustration" style="height: 100px;">
+      <img src="svg/what-this-means.svg" alt="" width="137" height="100" />
+    </div>
+    <div class="section-text">
+      <h2 class="section-heading">
+        <span class="neutral">What this</span><br>
+        <span class="accent">means for you?</span>
+      </h2>
+      <p class="section-body">Flent Secured adds structure and safeguards to rental income. It does not change your rent amount or agreement.</p>
+    </div>
+  </section>
+
+  <div class="spacer-md"></div>
+
+  <!-- Why landlords consider this? -->
+  <section class="section fade-up">
+    <div class="illustration" style="height: 120px;">
+      <img src="svg/why-landlords.svg" alt="" width="208" height="120" />
+    </div>
+    <div class="section-text gap-14">
+      <h2 class="section-heading">
+        <span class="accent">Why landlords</span><br>
+        consider this?
+      </h2>
+      <p class="section-body">More protection. No added charge</p>
+    </div>
+  </section>
+
+  <div class="spacer-sm"></div>
+
+  <!-- Feature Cards (horizontal scroll) -->
+  <div class="cards-scroll-container fade-up">
+    <div class="cards-scroll">
+      <div class="note-card">
+        <p>If the tenant leaves, <span class="accent">receive one month's rent</span> if the home remains vacant for 30 days</p>
+      </div>
+      <div class="note-card">
+        <p>If a tenant exits without notice, <span class="accent">receive up to one month's rent</span> after adjusting the deposit</p>
+      </div>
+      <div class="note-card">
+        <p>Complimentary tenant <span class="accent">background verification</span> report</p>
+      </div>
+      <div class="note-card">
+        <p>We <span class="accent">help find a replacement</span> tenant within 30 days</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="spacer-md"></div>
+
+  <!-- To activate protection cover -->
+  <section class="section fade-up">
+    <div class="illustration" style="height: 110px;">
+      <img src="svg/activate-protection.svg" alt="" width="99" height="110" />
+    </div>
+    <div class="section-text">
+      <h2 class="section-heading">
+        <span class="accent">To activate</span><br>
+        protection cover
+      </h2>
+    </div>
+  </section>
+
+  <!-- Requirement Cards (sticky stack) -->
+  <div class="req-cards">
+    <div class="req-card-wrap">
+      <div class="req-card fade-up">
+        <p><span class="accent">Minimum 3 month</span> waiting period</p>
+      </div>
+    </div>
+    <div class="req-card-wrap">
+      <div class="req-card fade-up">
+        <p><span class="accent">Rent must be collected continuously</span> through Flent Secured</p>
+      </div>
+    </div>
+    <div class="req-card-wrap">
+      <div class="req-card fade-up">
+        <p>Protection cover up to <span class="accent">₹1.5 lakhs</span></p>
+      </div>
+    </div>
+    <div class="req-card-wrap">
+      <div class="req-card fade-up">
+        <p><span class="accent">Minimum 30 days notice</span> served through the app for offboarding</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="spacer-md"></div>
+
+  <!-- Multi-Step Form -->
+  <section class="form-section fade-up" id="multiStepForm">
+
+    <!-- Step 1: Get Started -->
+    <div class="step" id="step1">
+      <div class="form-heading">
+        <span class="section-heading neutral">Get </span>
+        <span class="section-heading accent">Started</span>
+      </div>
+
+      <div class="form-fields">
+        <div class="field">
+          <label>Phone</label>
+          <div class="field-input">
+            <span class="country-code">
+              +91
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+            </span>
+            <input type="tel" class="form-input phone-input" id="phoneInput" placeholder="98765 43210" maxlength="12" autocomplete="off" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Email Address</label>
+          <div class="field-input" style="border-bottom: 0.5px solid #0d0d0d;">
+            <input type="email" class="form-input" id="emailInput" placeholder="e.g. john@email.com" autocomplete="off" />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <div class="btn-primary btn-disabled" id="continueBtn">
+          <div class="pill"></div>
+          <div class="btn-inner" onclick="goToStep(2)">
+            <span>Continue</span>
+          </div>
+        </div>
+        <p class="form-disclaimer">You may get a verification message from Cashfree to verify your profile and unlock benefits.</p>
+      </div>
+    </div>
+
+    <!-- Step 2: OTP -->
+    <div class="step" id="step2" style="display: none;">
+      <div style="text-align: center;">
+        <span class="section-heading neutral">We've sent a </span><br>
+        <span class="section-heading accent">4-digit code to this number</span>
+      </div>
+
+      <div class="otp-row">
+        <div class="otp-box"><input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="one-time-code" /></div>
+        <div class="otp-box"><input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" /></div>
+        <div class="otp-box"><input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" /></div>
+        <div class="otp-box"><input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" /></div>
+      </div>
+
+      <div class="form-actions">
+        <div class="btn-primary btn-disabled" id="proceedOtpBtn">
+          <div class="pill"></div>
+          <div class="btn-inner" onclick="goToStep(3)">
+            <span>Proceed</span>
+          </div>
+        </div>
+        <p class="form-link">Didn't receive the code? Resend</p>
+      </div>
+    </div>
+
+    <!-- Step 3: Confirm Details -->
+    <div class="step" id="step3" style="display: none;">
+      <div style="text-align: center;">
+        <span class="section-heading neutral">Confirm </span><br>
+        <span class="section-heading accent">your Details</span>
+      </div>
+
+      <div class="detail-rows">
+        <!-- Agreement ID -->
+        <div class="detail-row-inline">
+          <div class="detail-label-group">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#878787" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
+            <span class="detail-label">Agreement ID</span>
+          </div>
+          <span class="detail-value">KIA 123456789</span>
+        </div>
+        <hr class="detail-divider">
+
+        <!-- Property Name -->
+        <div class="detail-row-stacked">
+          <div class="detail-label-group">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#878787" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><line x1="8" y1="6" x2="10" y2="6"/><line x1="14" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/></svg>
+            <span class="detail-label">Property Name</span>
+          </div>
+          <span class="detail-value">Prestige Pinestripe, Bommanahalli, Bengaluru 560037</span>
+        </div>
+        <hr class="detail-divider">
+
+        <!-- Tenants -->
+        <div class="detail-row-stacked">
+          <div class="detail-label-group">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#878787" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span class="detail-label">Tenant(s)</span>
+          </div>
+          <span class="detail-value">Rahul Joshi, Ashish Shakya, Gursimran Khamba</span>
+        </div>
+        <hr class="detail-divider">
+
+        <!-- Landlords -->
+        <div class="detail-row-stacked">
+          <div class="detail-label-group">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#878787" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span class="detail-label">Landlord(s)</span>
+          </div>
+          <span class="detail-value">Tanmay Bhatt, Kaneez Surkha</span>
+        </div>
+        <hr class="detail-divider">
+
+        <!-- Monthly Rent -->
+        <div class="detail-row-inline">
+          <div class="detail-label-group">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#878787" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
+            <span class="detail-label">Monthly Rent</span>
+          </div>
+          <span class="detail-value">₹ 40,000</span>
+        </div>
+        <hr class="detail-divider">
+
+        <!-- One-Time Deposit -->
+        <div class="detail-row-inline">
+          <div class="detail-label-group">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#878787" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
+            <span class="detail-label">One-Time Deposit</span>
+          </div>
+          <span class="detail-value">₹ 130,000</span>
+        </div>
+        <hr class="detail-divider">
+
+        <!-- Rent Duration -->
+        <div class="detail-row-inline">
+          <div class="detail-label-group">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#878787" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
+            <span class="detail-label">Rent Duration</span>
+          </div>
+          <span class="detail-value">11 Months</span>
+        </div>
+        <hr class="detail-divider">
+
+        <!-- Exit Date -->
+        <div class="detail-row-inline">
+          <div class="detail-label-group">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#878787" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
+            <span class="detail-label">Exit Date</span>
+          </div>
+          <span class="detail-value">31 Dec, 2027</span>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <div class="btn-primary" id="proceedConfirmBtn">
+          <div class="pill"></div>
+          <div class="btn-inner" onclick="goToStep(4)">
+            <span>Proceed</span>
+          </div>
+        </div>
+        <p class="form-link">Enter Manually</p>
+      </div>
+    </div>
+
+    <!-- Step 4: Success -->
+    <div class="step" id="step4" style="display: none;">
+      <div style="text-align: center;">
+        <span class="section-heading neutral">Rishabh Agnihotri</span><br>
+        <span class="section-heading accent">your're all set!</span>
+      </div>
+
+      <div class="success-illustration">
+        <svg width="265" height="200" viewBox="0 0 265 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Trophy illustration (simplified dotted style) -->
+          <g opacity="0.6">
+            <!-- Trophy cup -->
+            <rect x="90" y="40" width="85" height="8" rx="4" fill="#555"/>
+            <rect x="95" y="48" width="75" height="60" rx="6" fill="#444" stroke="#555" stroke-width="1"/>
+            <rect x="105" y="108" width="55" height="8" rx="2" fill="#555"/>
+            <rect x="100" y="116" width="65" height="6" rx="3" fill="#444"/>
+            <rect x="108" y="122" width="50" height="12" rx="2" fill="#555"/>
+            <!-- Star -->
+            <path d="M132.5 68L137 78H128L132.5 68Z" fill="#777"/>
+            <path d="M132.5 68L128 78H137L132.5 68Z" fill="#666"/>
+            <circle cx="132.5" cy="74" r="8" stroke="#666" stroke-width="1.5" fill="none"/>
+            <!-- Handles -->
+            <path d="M95 58C80 58 75 68 80 80C85 88 95 88 95 88" stroke="#555" stroke-width="2" fill="none"/>
+            <path d="M170 58C185 58 190 68 185 80C180 88 170 88 170 88" stroke="#555" stroke-width="2" fill="none"/>
+            <!-- Sparkles -->
+            <circle cx="60" cy="50" r="2" fill="#666"/><circle cx="65" cy="45" r="1" fill="#555"/>
+            <circle cx="200" cy="55" r="2" fill="#666"/><circle cx="205" cy="48" r="1" fill="#555"/>
+            <circle cx="55" cy="90" r="1.5" fill="#555"/><circle cx="210" cy="85" r="1.5" fill="#555"/>
+            <line x1="50" y1="65" x2="55" y2="60" stroke="#555" stroke-width="1"/>
+            <line x1="215" y1="70" x2="210" y2="65" stroke="#555" stroke-width="1"/>
+            <!-- Confetti dots -->
+            <circle cx="70" cy="70" r="1" fill="#666"/><circle cx="190" cy="75" r="1" fill="#666"/>
+            <circle cx="75" cy="105" r="1.5" fill="#555"/><circle cx="195" cy="100" r="1.5" fill="#555"/>
+            <circle cx="80" cy="130" r="1" fill="#444"/><circle cx="185" cy="125" r="1" fill="#444"/>
+            <!-- Base text -->
+            <text x="132.5" y="155" text-anchor="middle" font-family="Geist, sans-serif" font-size="8" fill="#555" letter-spacing="2">CHAMPION</text>
+          </g>
+        </svg>
+      </div>
+
+      <p class="success-body">Your setup is complete. You'll now receive rent payments and updates through Secured.</p>
+    </div>
+
+  </section>
+
+  <div class="spacer-lg"></div>
+
+  <!-- Prefer to speak with someone? -->
+  <section class="speak-section fade-up">
+    <div class="illustration" style="height: 110px;">
+      <img src="svg/prefer-to-speak.svg" alt="" width="153" height="110" />
+    </div>
+    <div class="section-text gap-14">
+      <h2 class="section-heading">
+        <span class="accent">Prefer to speak</span><br>
+        with someone before?
+      </h2>
+      <p class="section-body">We're happy to explain how Flent Secured works and what it means for you.</p>
+    </div>
+    <div class="speak-btn">
+      <div class="btn-primary">
+        <div class="pill"></div>
+        <div class="btn-inner">
+          <span>Talk to support</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="spacer-md"></div>
+
+  <!-- Home Indicator -->
+  <div class="home-indicator">
+    <div></div>
+  </div>
+
+  <!-- Scroll Animation Script -->
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // ── Multi-step form logic ──
+
+    const phoneInput = document.getElementById('phoneInput');
+    const emailInput = document.getElementById('emailInput');
+    const continueBtn = document.getElementById('continueBtn');
+    const proceedOtpBtn = document.getElementById('proceedOtpBtn');
+    const otpInputs = document.querySelectorAll('.otp-input');
+
+    // Step 1: Watch phone + email → activate Continue
+    function checkStep1() {
+      const phoneFilled = phoneInput.value.trim().length >= 5;
+      const emailFilled = emailInput.value.trim().length >= 3 && emailInput.value.includes('@');
+      if (phoneFilled && emailFilled) {
+        continueBtn.classList.remove('btn-disabled');
+      } else {
+        continueBtn.classList.add('btn-disabled');
+      }
+    }
+
+    phoneInput.addEventListener('input', checkStep1);
+    emailInput.addEventListener('input', checkStep1);
+
+    // Step 2: OTP auto-advance + activation
+    otpInputs.forEach((input, index) => {
+      input.addEventListener('input', (e) => {
+        const val = e.target.value;
+        if (val.length === 1) {
+          e.target.classList.add('filled');
+          if (index < otpInputs.length - 1) {
+            otpInputs[index + 1].focus();
+          }
+        } else {
+          e.target.classList.remove('filled');
+        }
+        checkOtp();
+      });
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !e.target.value && index > 0) {
+          otpInputs[index - 1].focus();
+          otpInputs[index - 1].value = '';
+          otpInputs[index - 1].classList.remove('filled');
+          checkOtp();
+        }
+      });
+    });
+
+    function checkOtp() {
+      const allFilled = Array.from(otpInputs).every(inp => inp.value.trim().length === 1);
+      if (allFilled) {
+        proceedOtpBtn.classList.remove('btn-disabled');
+      } else {
+        proceedOtpBtn.classList.add('btn-disabled');
+      }
+    }
+
+    // Navigate between steps
+    function goToStep(stepNum) {
+      // Don't proceed if button is disabled
+      const currentStep = document.querySelector('.step:not([style*="display: none"])');
+      const currentBtn = currentStep.querySelector('.btn-disabled');
+      if (currentBtn && currentBtn.querySelector('.btn-inner')) return;
+
+      // Hide all steps
+      document.querySelectorAll('.step').forEach(s => s.style.display = 'none');
+
+      // Show target step
+      const target = document.getElementById('step' + stepNum);
+      target.style.display = 'flex';
+
+      // Scroll form into view
+      document.getElementById('multiStepForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      // Auto-focus first input on OTP step
+      if (stepNum === 2) {
+        setTimeout(() => otpInputs[0].focus(), 400);
+      }
+    }
+  </script>
+
+</body>
+</html>
