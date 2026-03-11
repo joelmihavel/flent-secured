@@ -120,17 +120,25 @@
       width: 100%;
       padding: 16px;
       border-radius: 8px;
-      border: 0.5px solid var(--border-brand);
-      background: linear-gradient(180deg, #202020 0%, #0d0d0d 90%);
+      border: 1px solid rgba(255, 154, 109, 0.25);
+      background: linear-gradient(180deg, #202020 0%, #0d0d0d 90.18%);
       box-shadow: 0px 6px 12px -2px rgba(153,92,65,0.24),
                   inset 0px -3px 4px 1px rgba(255,255,255,0.12),
                   inset -2px -4px 0px 1px #000;
       cursor: pointer;
-      transition: opacity 0.2s;
+      transition: transform 0.08s ease-out, box-shadow 0.08s ease-out, background 0.08s ease-out;
     }
 
-    .btn-primary .btn-inner:hover {
-      opacity: 0.9;
+    .btn-primary:not(.btn-disabled) .btn-inner:active {
+      transform: translateY(2px) scale(0.985);
+      background: #111111;
+      box-shadow: inset 0 2px 16px rgba(0,0,0,0.8),
+                  inset 0 0 0 2px rgba(0,0,0,0.6);
+      border-color: rgba(255, 154, 109, 0.12);
+    }
+
+    .btn-primary:not(.btn-disabled):active .pill {
+      background: var(--brand);
     }
 
     .btn-primary .btn-inner span {
@@ -143,13 +151,14 @@
 
     /* Disabled button */
     .btn-disabled .btn-inner {
-      background: var(--bg-input);
-      border: 1px solid var(--border);
+      background: #202020;
+      border: 1px solid #202020;
       box-shadow: none;
+      cursor: default;
     }
 
     .btn-disabled .btn-inner span {
-      color: var(--text-muted);
+      color: #444444;
     }
 
     /* Dotted divider lines */
@@ -711,9 +720,9 @@
       border-top: 0.25px dashed #444444;
     }
 
-    /* Button active transition */
+    /* Button release transition — slightly slower for spring-back feel */
     .btn-primary .btn-inner {
-      transition: all 0.3s ease;
+      transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, background 0.2s ease-out;
     }
 
     /* Resend / Enter Manually link */
@@ -924,11 +933,12 @@
       <div class="form-actions">
         <div class="btn-primary btn-disabled" id="continueBtn">
           <div class="pill"></div>
-          <div class="btn-inner" onclick="goToStep(2)">
-            <span>Continue</span>
+          <div class="btn-inner" onclick="handleSubmit()">
+            <span id="continueBtnText">Continue</span>
           </div>
         </div>
         <p class="form-disclaimer">You may get a verification message from Cashfree to verify your profile and unlock benefits.</p>
+        <p id="step1Error" style="font-size:12px; color:#ff7070; text-align:center; display:none;"></p>
       </div>
     </div>
 
@@ -936,24 +946,27 @@
     <div class="step" id="step2" style="display: none;">
       <div style="text-align: center;">
         <span class="section-heading neutral">We've sent a </span><br>
-        <span class="section-heading accent">4-digit code to this number</span>
+        <span class="section-heading accent">6-digit code to this number</span>
       </div>
 
-      <div class="otp-row">
-        <div class="otp-box"><input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="one-time-code" /></div>
-        <div class="otp-box"><input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" /></div>
-        <div class="otp-box"><input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" /></div>
-        <div class="otp-box"><input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" /></div>
+      <div class="otp-row" style="gap: 6px;">
+        <div class="otp-box" style="width:46px; min-width:46px; height:54px;"><input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="one-time-code" style="font-size:32px;" /></div>
+        <div class="otp-box" style="width:46px; min-width:46px; height:54px;"><input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" style="font-size:32px;" /></div>
+        <div class="otp-box" style="width:46px; min-width:46px; height:54px;"><input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" style="font-size:32px;" /></div>
+        <div class="otp-box" style="width:46px; min-width:46px; height:54px;"><input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" style="font-size:32px;" /></div>
+        <div class="otp-box" style="width:46px; min-width:46px; height:54px;"><input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" style="font-size:32px;" /></div>
+        <div class="otp-box" style="width:46px; min-width:46px; height:54px;"><input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]" style="font-size:32px;" /></div>
       </div>
 
       <div class="form-actions">
         <div class="btn-primary btn-disabled" id="proceedOtpBtn">
           <div class="pill"></div>
-          <div class="btn-inner" onclick="goToStep(3)">
-            <span>Proceed</span>
+          <div class="btn-inner" onclick="handleVerifyOtp()">
+            <span id="proceedOtpBtnText">Proceed</span>
           </div>
         </div>
-        <p class="form-link">Didn't receive the code? Resend</p>
+        <p class="form-link">Didn't receive the code? <span onclick="handleResend()" style="cursor:pointer; text-decoration:underline;">Resend</span></p>
+        <p id="step2Error" style="font-size:12px; color:#ff7070; text-align:center; display:none;"></p>
       </div>
     </div>
 
@@ -971,7 +984,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="#878787" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
             <span class="detail-label">Agreement ID</span>
           </div>
-          <span class="detail-value">KIA 123456789</span>
+          <span class="detail-value" id="detailAgreementId">—</span>
         </div>
         <hr class="detail-divider">
 
@@ -981,7 +994,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="#878787" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><line x1="8" y1="6" x2="10" y2="6"/><line x1="14" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/></svg>
             <span class="detail-label">Property Name</span>
           </div>
-          <span class="detail-value">Prestige Pinestripe, Bommanahalli, Bengaluru 560037</span>
+          <span class="detail-value" id="detailPropertyName">—</span>
         </div>
         <hr class="detail-divider">
 
@@ -991,7 +1004,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="#878787" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             <span class="detail-label">Tenant(s)</span>
           </div>
-          <span class="detail-value">Rahul Joshi, Ashish Shakya, Gursimran Khamba</span>
+          <span class="detail-value" id="detailTenants">—</span>
         </div>
         <hr class="detail-divider">
 
@@ -1001,7 +1014,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="#878787" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             <span class="detail-label">Landlord(s)</span>
           </div>
-          <span class="detail-value">Tanmay Bhatt, Kaneez Surkha</span>
+          <span class="detail-value" id="detailLandlords">—</span>
         </div>
         <hr class="detail-divider">
 
@@ -1011,7 +1024,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="#878787" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
             <span class="detail-label">Monthly Rent</span>
           </div>
-          <span class="detail-value">₹ 40,000</span>
+          <span class="detail-value" id="detailMonthlyRent">—</span>
         </div>
         <hr class="detail-divider">
 
@@ -1021,7 +1034,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="#878787" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
             <span class="detail-label">One-Time Deposit</span>
           </div>
-          <span class="detail-value">₹ 130,000</span>
+          <span class="detail-value" id="detailDeposit">—</span>
         </div>
         <hr class="detail-divider">
 
@@ -1031,7 +1044,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="#878787" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
             <span class="detail-label">Rent Duration</span>
           </div>
-          <span class="detail-value">11 Months</span>
+          <span class="detail-value" id="detailRentDuration">—</span>
         </div>
         <hr class="detail-divider">
 
@@ -1041,26 +1054,25 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="#878787" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
             <span class="detail-label">Exit Date</span>
           </div>
-          <span class="detail-value">31 Dec, 2027</span>
+          <span class="detail-value" id="detailExitDate">—</span>
         </div>
       </div>
 
       <div class="form-actions">
         <div class="btn-primary" id="proceedConfirmBtn">
           <div class="pill"></div>
-          <div class="btn-inner" onclick="goToStep(4)">
+          <div class="btn-inner" onclick="handleProceed()">
             <span>Proceed</span>
           </div>
         </div>
-        <p class="form-link">Enter Manually</p>
       </div>
     </div>
 
     <!-- Step 4: Success -->
     <div class="step" id="step4" style="display: none;">
       <div style="text-align: center;">
-        <span class="section-heading neutral">Rishabh Agnihotri</span><br>
-        <span class="section-heading accent">your're all set!</span>
+        <span class="section-heading neutral" id="successName">there</span><br>
+        <span class="section-heading accent">you're all set!</span>
       </div>
 
       <div class="success-illustration">
@@ -1134,56 +1146,111 @@
 
   <!-- Scroll Animation Script -->
   <script>
+    // ── Scroll animations ──
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
+        if (entry.isIntersecting) entry.target.classList.add('visible');
       });
-    }, {
-      threshold: 0.15,
-      rootMargin: '0px 0px -40px 0px'
-    });
-
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-    // ── Multi-step form logic ──
+    // ── Config ──
+    const SUPABASE_URL = 'https://zqlowjveyqiagnbmfwsb.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpxbG93anZleXFpYWduYm1md3NiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg5OTY1NTUsImV4cCI6MjA4NDU3MjU1NX0.k-CdevFklQdbfs9s-89_5RXke-Wcx6lVzu8gcolL0NM';
+    const ENDPOINTS = {
+      authOtp:        `${SUPABASE_URL}/functions/v1/landlord-auth-otp`,
+      getTenancy:     `${SUPABASE_URL}/functions/v1/get-landlord-tenancy`,
+      notifyLandlord: `${SUPABASE_URL}/functions/v1/landlord-confirm`,
+    };
 
-    const phoneInput = document.getElementById('phoneInput');
-    const emailInput = document.getElementById('emailInput');
-    const continueBtn = document.getElementById('continueBtn');
+    // ── State ──
+    let _phone = '', _email = '', _otpRequestId = null, _accessToken = '', _tenancy = null;
+
+    // ── DOM refs ──
+    const phoneInput    = document.getElementById('phoneInput');
+    const emailInput    = document.getElementById('emailInput');
+    const continueBtn   = document.getElementById('continueBtn');
     const proceedOtpBtn = document.getElementById('proceedOtpBtn');
-    const otpInputs = document.querySelectorAll('.otp-input');
+    const otpInputs     = document.querySelectorAll('.otp-input');
 
-    // Step 1: Watch phone + email → activate Continue
+    // ── API helpers ──
+    async function post(url, body, token) {
+      const headers = { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY };
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+      const res  = await fetch(url, { method: 'POST', headers, body: JSON.stringify(body) });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || data.error || 'Request failed');
+      return data;
+    }
+
+    async function get(url, token) {
+      const res  = await fetch(url, { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${token}` } });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || data.error || 'Request failed');
+      return data;
+    }
+
+    // ── UI helpers ──
+    function showError(id, msg) {
+      const el = document.getElementById(id);
+      el.textContent = msg;
+      el.style.display = msg ? 'block' : 'none';
+    }
+
+    function setLoading(btnInner, spanEl, loading, label) {
+      btnInner.style.opacity        = loading ? '0.6' : '';
+      btnInner.style.pointerEvents  = loading ? 'none' : '';
+      spanEl.textContent            = loading ? 'Loading…' : label;
+    }
+
+    function goToStep(stepNum) {
+      document.querySelectorAll('.step').forEach(s => s.style.display = 'none');
+      document.getElementById('step' + stepNum).style.display = 'flex';
+      document.getElementById('multiStepForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (stepNum === 2) setTimeout(() => otpInputs[0].focus(), 400);
+    }
+
+    // ── Step 1: validate inputs → activate Continue ──
     function checkStep1() {
       const phoneFilled = phoneInput.value.trim().length >= 5;
       const emailFilled = emailInput.value.trim().length >= 3 && emailInput.value.includes('@');
-      if (phoneFilled && emailFilled) {
-        continueBtn.classList.remove('btn-disabled');
-      } else {
-        continueBtn.classList.add('btn-disabled');
-      }
+      continueBtn.classList.toggle('btn-disabled', !(phoneFilled && emailFilled));
     }
-
     phoneInput.addEventListener('input', checkStep1);
     emailInput.addEventListener('input', checkStep1);
 
-    // Step 2: OTP auto-advance + activation
+    // ── Step 1: send OTP ──
+    async function handleSubmit() {
+      if (continueBtn.classList.contains('btn-disabled')) return;
+      _phone = phoneInput.value.trim().replace(/\s/g, '');
+      _email = emailInput.value.trim();
+      showError('step1Error', '');
+      const btnInner = continueBtn.querySelector('.btn-inner');
+      const btnSpan  = document.getElementById('continueBtnText');
+      setLoading(btnInner, btnSpan, true, 'Continue');
+      try {
+        const data = await post(ENDPOINTS.authOtp, { action: 'send_otp', phone_number: `+91${_phone}` });
+        _otpRequestId = data.data.otp_request_id;
+        goToStep(2);
+      } catch (e) {
+        showError('step1Error', e.message);
+      } finally {
+        setLoading(btnInner, btnSpan, false, 'Continue');
+      }
+    }
+
+    // ── Step 2: OTP boxes — auto-advance + activate Proceed ──
     otpInputs.forEach((input, index) => {
       input.addEventListener('input', (e) => {
         const val = e.target.value;
         if (val.length === 1) {
           e.target.classList.add('filled');
-          if (index < otpInputs.length - 1) {
-            otpInputs[index + 1].focus();
-          }
+          if (index < otpInputs.length - 1) otpInputs[index + 1].focus();
         } else {
           e.target.classList.remove('filled');
         }
         checkOtp();
       });
-
       input.addEventListener('keydown', (e) => {
         if (e.key === 'Backspace' && !e.target.value && index > 0) {
           otpInputs[index - 1].focus();
@@ -1196,34 +1263,120 @@
 
     function checkOtp() {
       const allFilled = Array.from(otpInputs).every(inp => inp.value.trim().length === 1);
-      if (allFilled) {
-        proceedOtpBtn.classList.remove('btn-disabled');
-      } else {
-        proceedOtpBtn.classList.add('btn-disabled');
+      proceedOtpBtn.classList.toggle('btn-disabled', !allFilled);
+    }
+
+    // ── Step 2: verify OTP → fetch tenancy ──
+    async function handleVerifyOtp() {
+      if (proceedOtpBtn.classList.contains('btn-disabled')) return;
+      const otp = Array.from(otpInputs).map(i => i.value).join('');
+      showError('step2Error', '');
+      const btnInner = proceedOtpBtn.querySelector('.btn-inner');
+      const btnSpan  = document.getElementById('proceedOtpBtnText');
+      setLoading(btnInner, btnSpan, true, 'Proceed');
+      try {
+        const data = await post(ENDPOINTS.authOtp, {
+          action: 'verify_otp',
+          phone_number: `+91${_phone}`,
+          otp,
+          otp_request_id: _otpRequestId,
+        });
+        const token = data.data?.session?.access_token;
+        if (!token) throw new Error('Authentication failed. Please try again.');
+        _accessToken = token;
+
+        const tenancyResponse = await get(ENDPOINTS.getTenancy, token);
+        const t = tenancyResponse.data;
+        if (!t) {
+          showError('step2Error', 'No tenancy found for this number. Please contact support.');
+          return;
+        }
+
+        _tenancy = {
+          agreementId:  t.agreement_cert_id ?? t.id,
+          propertyName: t.property_name ?? t.property_address,
+          tenants:      Array.isArray(t.tenant_names) && t.tenant_names.length ? t.tenant_names.join(', ') : (t.tenant_name ?? '—'),
+          landlords:    Array.isArray(t.landlord_names) && t.landlord_names.length ? t.landlord_names.join(', ') : (t.landlord_name ?? '—'),
+          monthlyRent:  t.monthly_rent_paise    ? `₹${(t.monthly_rent_paise / 100).toLocaleString('en-IN')}`    : '—',
+          deposit:      t.security_deposit_paise ? `₹${(t.security_deposit_paise / 100).toLocaleString('en-IN')}` : '—',
+          rentDuration: t.rent_duration_months  ? `${t.rent_duration_months} months` : `${t.lease_start_date ?? '—'} – ${t.lease_end_date ?? '—'}`,
+          exitDate:     t.lease_end_date ?? '—',
+        };
+
+        populateStep3();
+        goToStep(3);
+      } catch (e) {
+        showError('step2Error', e.message);
+      } finally {
+        setLoading(btnInner, btnSpan, false, 'Proceed');
       }
     }
 
-    // Navigate between steps
-    function goToStep(stepNum) {
-      // Don't proceed if button is disabled
-      const currentStep = document.querySelector('.step:not([style*="display: none"])');
-      const currentBtn = currentStep.querySelector('.btn-disabled');
-      if (currentBtn && currentBtn.querySelector('.btn-inner')) return;
-
-      // Hide all steps
-      document.querySelectorAll('.step').forEach(s => s.style.display = 'none');
-
-      // Show target step
-      const target = document.getElementById('step' + stepNum);
-      target.style.display = 'flex';
-
-      // Scroll form into view
-      document.getElementById('multiStepForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-      // Auto-focus first input on OTP step
-      if (stepNum === 2) {
-        setTimeout(() => otpInputs[0].focus(), 400);
+    // ── Step 2: resend OTP ──
+    async function handleResend() {
+      showError('step2Error', '');
+      try {
+        const data = await post(ENDPOINTS.authOtp, { action: 'resend_otp', otp_request_id: _otpRequestId });
+        _otpRequestId = data.data.otp_request_id;
+      } catch (e) {
+        showError('step2Error', e.message);
       }
+    }
+
+    // ── Step 3: populate detail rows from API data ──
+    function populateStep3() {
+      document.getElementById('detailAgreementId').textContent  = _tenancy.agreementId;
+      document.getElementById('detailPropertyName').textContent = _tenancy.propertyName;
+      document.getElementById('detailTenants').textContent      = _tenancy.tenants;
+      document.getElementById('detailLandlords').textContent    = _tenancy.landlords;
+      document.getElementById('detailMonthlyRent').textContent  = _tenancy.monthlyRent;
+      document.getElementById('detailDeposit').textContent      = _tenancy.deposit;
+      document.getElementById('detailRentDuration').textContent = _tenancy.rentDuration;
+      document.getElementById('detailExitDate').textContent     = _tenancy.exitDate;
+    }
+
+    // ── Step 3: toggle manual edit of detail rows ──
+    let _isManualEdit = false;
+
+    function toggleManualEdit() {
+      _isManualEdit = !_isManualEdit;
+      const detailValues = document.querySelectorAll('#step3 .detail-value');
+      const btn = document.getElementById('enterManuallyBtn');
+
+      detailValues.forEach(span => {
+        span.contentEditable = _isManualEdit ? 'true' : 'false';
+        span.style.borderBottom  = _isManualEdit ? '0.5px solid #555' : '';
+        span.style.paddingBottom = _isManualEdit ? '2px' : '';
+        span.style.outline       = 'none';
+      });
+
+      if (_isManualEdit) {
+        btn.textContent = 'Confirm';
+        // Focus the first editable field
+        document.getElementById('detailAgreementId').focus();
+      } else {
+        btn.textContent = 'Enter Manually';
+        // Sync edited values back into _tenancy
+        if (_tenancy) {
+          _tenancy.agreementId  = document.getElementById('detailAgreementId').textContent.trim();
+          _tenancy.propertyName = document.getElementById('detailPropertyName').textContent.trim();
+          _tenancy.tenants      = document.getElementById('detailTenants').textContent.trim();
+          _tenancy.landlords    = document.getElementById('detailLandlords').textContent.trim();
+          _tenancy.monthlyRent  = document.getElementById('detailMonthlyRent').textContent.trim();
+          _tenancy.deposit      = document.getElementById('detailDeposit').textContent.trim();
+          _tenancy.rentDuration = document.getElementById('detailRentDuration').textContent.trim();
+          _tenancy.exitDate     = document.getElementById('detailExitDate').textContent.trim();
+        }
+      }
+    }
+
+    // ── Step 3: confirm → notify landlord (fire and forget) ──
+    function handleProceed() {
+      const firstLandlord = _tenancy?.landlords?.split(',')[0]?.trim() || 'there';
+      document.getElementById('successName').textContent = firstLandlord;
+      goToStep(4);
+      post(ENDPOINTS.notifyLandlord, {}, _accessToken)
+        .catch(e => console.error('[handleProceed] notify-landlord error:', e.message));
     }
   </script>
 
